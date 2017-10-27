@@ -1,0 +1,23 @@
+---
+title: "Statistinės duomenų analizės praktinės užduotys"
+author: "Lukas Vabalas"
+date: "2017"
+output: pdf_document
+---
+
+2. Duomenų suklasifikavimas pagal kategorijas ir empirinių charakteristikų
+   skaičiavimas kiekvienoje kategorijoje. Suklasifikuoti asmenis pagal amžiu į
+   septynias kategorijas, žymimas nuo 1 iki 7 didėjančia amžiaus tvarka.
+   Pavadinkime kintamąjį, įgyjanti šias reikšmes, _katamz_:
+
+   | amžius   | <=20 | 20-30 | 31-40 | 41-50 | 51-60 | 61-70 | >=71 |
+   |----------|------|-------|-------|-------|-------|-------|------|
+   | _katamz_ | 1    | 2     | 3     | 4     | 5     | 6     | 7    |
+
+   Rasti kintamojo "spaudimas" empirines charakteristikas
+
+   + tarp visų asmenų
+   + kiekvienoje amžiaus kategorijoje
+   + vyrams ir moterims
+   + vyrams ir moterims kiekvienoje amžiaus kategorijoje
+
