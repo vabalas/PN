@@ -21,13 +21,14 @@ norm1 <- rnorm(n, mean=65, sd=11) # Dėstytojo sprendiniuose irgi imta 11, o ne 
    Tarkime, kad $X_1$, ..., $X_n$ yra imtis, $X_i \sim N(\mu, \sigma^2)$.
    Vidurkio lygio $1 - \alpha$ pasikliovimo intervalą
 
-   $(\underline{\mu}, \overline{\mu}) = \bar{X} - t_{\alpha / 2}(n - 1) \frac{s}{\sqrt{n}}, \bar{X} + t_{\alpha / 2}(n - 1) \frac{s}{\sqrt{n}}$
+   $$(\underline{\mu}, \overline{\mu}) = \bar{X} - t_{\alpha / 2}(n - 1) \frac{s}{\sqrt{n}},
+   \bar{X} + t_{\alpha / 2}(n - 1) \frac{s}{\sqrt{n}}$$
 
 ```{r}
-mu_u95 <- mean(norm1) + qt(.95 + (1-.95)/2, n - 1) * sd(norm1) / sqrt(n)
-mu_l95 <- mean(norm1) - qt(.95 + (1-.95)/2, n - 1) * sd(norm1) / sqrt(n)
-mu_u90 <- mean(norm1) + qt(.90 + (1-.90)/2, n - 1) * sd(norm1) / sqrt(n)
-mu_l90 <- mean(norm1) - qt(.90 + (1-.90)/2, n - 1) * sd(norm1) / sqrt(n)
+mu_u95 <- mean(norm1) + qt(1 - .05/2, n - 1) * sd(norm1) / sqrt(n)
+mu_l95 <- mean(norm1) - qt(1 - .05/2, n - 1) * sd(norm1) / sqrt(n)
+mu_u90 <- mean(norm1) + qt(1 - 0.1/2, n - 1) * sd(norm1) / sqrt(n)
+mu_l90 <- mean(norm1) - qt(1 - 0.1/2, n - 1) * sd(norm1) / sqrt(n)
 
 CI <- rbind(c(mu_l90, mu_u90), c(mu_l95, mu_u95))
 colnames(CI) <- c("$\\underline{\\mu}$","$\\overline{\\mu}$")
@@ -40,18 +41,15 @@ kable(CI)
 
    $1 - \alpha$ pasikliovimo intervalas _normalaus skirstinio_ dispersijai yra
 
-   $\underline{\sigma^2} = \frac{(n - 1)S^2}{\chi^2_{\alpha / 2}(n - 1)}$,
-   $\overline{\sigma^2} = \frac{(n - 1)S^2}{\chi^2_{1 - \alpha / 2}(n - 1)}$.
+   $$\underline{\sigma^2} = \frac{(n - 1)S^2}{\chi^2_{\alpha / 2}(n - 1)},$$
+
+   $$\overline{\sigma^2} = \frac{(n - 1)S^2}{\chi^2_{1 - \alpha / 2}(n - 1)}.$$
 
 ```{r}
-sigma_l95 <- (n - 1) * var(norm1) / qchisq((1-.95) / 2, n - 1)
-# [1] 139.3838
-sigma_u95 <- (n - 1) * var(norm1) / qchisq(1 - (1-.95)/2, n - 1)
-# [1] 101.0998
-sigma_l90 <- (n - 1) * var(norm1) / qchisq((1-.90) / 2, n - 1)
-# [1] 135.6556
-sigma_u90 <- (n - 1) * var(norm1) / qchisq(1 - (1-.90)/2, n - 1)
-# [1] 103.6149
+sigma_l95 <- (n - 1) * var(norm1) / qchisq(1 - .05/2, n - 1)
+sigma_u95 <- (n - 1) * var(norm1) / qchisq(1 - (1 - .05/2), n - 1)
+sigma_l90 <- (n - 1) * var(norm1) / qchisq(1 - .1/2, n - 1)
+sigma_u90 <- (n - 1) * var(norm1) / qchisq(1 - (1 - .1/2), n - 1)
 
 CI <- rbind(c(sigma_l90, sigma_u90), c(sigma_l95, sigma_u95))
 colnames(CI) <- c("$\\underline{\\sigma^2}$","$\\overline{\\sigma^2}$")
@@ -68,6 +66,27 @@ kable(CI)
    Tarę, kad buvo stebimas _normalus a. d._, raskite maksimalaus greičio vidurkio
    ir vidutinio kvadratinio nuokrypio taškinius įvertinius ir 0.95 pasikliovimo
    intervalus.
+
+```{r}
+dat  <- c(422.2, 418.7, 425.6, 420.3, 425.8,
+          423.1, 431.5, 428.2, 438.3, 434.0,
+          411.3, 417.2, 413.5, 441.3, 423.0)
+
+estimates <- c(mean(dat), var(dat))
+names(estimates) <- c("$\\hat{\\mu}$", "$\\hat{\\sigma^2}$")
+kable(estimates)
+
+mu_u <- mean(dat) + qt(1 - 0.05/2, n - 1) * sd(dat) / sqrt(n)
+mu_l <- mean(dat) - qt(1 - 0.05/2, n - 1) * sd(dat) / sqrt(n)
+sigma_l <- (n - 1) * var(dat) / qchisq(1 - .05/2, n - 1)
+sigma_u <- (n - 1) * var(dat) / qchisq(1 - (1 - .05/2), n - 1)
+
+CI <- rbind(c(mu_l, mu_u), c(sigma_l, sigma_u))
+colnames(CI) <- c("apat.","virs.")
+rownames(CI) <- c("$\\mu$","$\\sigma^2$")
+kable(CI)
+
+```
 
    (d) Sukonstruoti 0.95 - pasikliautinį intervalą eksponentinio skirstinio
    vidurkiui, naudojant imtį `eksp`.
