@@ -1,1 +1,20 @@
-hello
+---
+title: "Statistinės duomenų analizės praktinės užduotys"
+date: "2017"
+output: pdf_document
+---
+
+3. __Imčių generavimas.__
+
+   (a) Sugeneruoti imtį $X_1$, ...,$X_{300}$, $X_i ~ N(65, 11)$ (kintamasis `norm1`)
+
+   (b) Su tuo pačiu generatoriumi sugeneruoti imtį $Y_1$, ..., $Y_{300}$,
+   $Y_i ~ N(65, 1)$ (kintamasis `norm2`). Palyginti empirines charakteristikas.
+
+   (c) Sugeneruoti dar šešias tūrio $n = 300$ imtis (kintamieji `eksp`, `tolyg`,
+   `ber`, `bin`, `puas`, `geom`) iš atitinkamai eksponentinio $E(65)$, tolygaus
+   $U(54, 76)$, Bernulio $Bern(0.4)$, binominio $Bin(10, 0.4)$ bei Puasono $P(65)$
+   skirstinių
+
+   (d) Visų skirstinių atveju palyginkite teorinius ir empirinius vidurkius
+   bei dispersijas
