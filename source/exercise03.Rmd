@@ -6,15 +6,111 @@ output: pdf_document
 
 3. __Imčių generavimas.__
 
-   (a) Sugeneruoti imtį $X_1$, ...,$X_{300}$, $X_i ~ N(65, 11)$ (kintamasis `norm1`)
+```{r}
+library(knitr)
+set.seed(42)
+n <- 300
+```
 
+   (a) Sugeneruoti imtį $X_1$, ...,$X_{300}$, $X_i \sim N(65, 11)$ (kintamasis `norm1`)
+
+```{r}
+norm1 <- rnorm(n, mean=65, sd=11) # Dėstytojo sprendiniuose irgi imta 11, o ne srqt(11)
+head(norm1)
+```
    (b) Su tuo pačiu generatoriumi sugeneruoti imtį $Y_1$, ..., $Y_{300}$,
-   $Y_i ~ N(65, 1)$ (kintamasis `norm2`). Palyginti empirines charakteristikas.
+   $Y_i \sim N(65, 1)$ (kintamasis `norm2`). Palyginti empirines charakteristikas.
+
+```{r}
+norm2 <- rnorm(n, mean=65, sd=1)
+head(norm2)
+
+desc_df <- function(df) {
+  # Calculates descriptive statistics, returns data frame
+  std <- function(x) sd(x) / sqrt(length(x))
+
+  do.call(data.frame,
+          list(
+                mean = apply(df, 2, mean),
+                median = apply(df, 2, median),
+                std.deviation = apply(df, 2, sd),
+                variance = apply(df, 2, var),
+                min = apply(df, 2, min),
+                max = apply(df, 2, max),
+                s.e.mean = apply(df, 2, std),
+                n = apply(df, 2, length)
+              )
+         )
+
+}
+
+kable(desc_df(data.frame(norm1=norm1, norm2=norm2)))
+
+oldpar <- par(mfrow=c(1, 2))
+hist(norm1)
+hist(norm2)
+par(oldpar)
+```
 
    (c) Sugeneruoti dar šešias tūrio $n = 300$ imtis (kintamieji `eksp`, `tolyg`,
    `ber`, `bin`, `puas`, `geom`) iš atitinkamai eksponentinio $E(65)$, tolygaus
    $U(54, 76)$, Bernulio $Bern(0.4)$, binominio $Bin(10, 0.4)$ bei Puasono $P(65)$
    skirstinių
 
+```{r}
+eksp <- rexp(n, rate=1 / 65)
+head(eksp)
+tolyg <- runif(n, min=54, max=76)
+head(tolyg)
+ber <- rbinom(n, size=1, prob=0.4)
+#    binominio a.d atvejis, kai size parametras lygus 1.
+head(ber)
+bin <- rbinom(n, size=10, prob=0.4)
+#    size: number of trials (zero or more).
+#    prob: probability of success on each trial.
+head(bin)
+puas <- rpois(n, lambda=65)
+#    lambda: vector of (non-negative) means.
+head(puas)
+geom <- rgeom(n, prob=0.4) # Dėstytojas praleido šitą salygoje. L. p. parametrą.
+#    prob: probability of success in each trial. '0 < prob <= 1'.
+head(geom)
+```
+
    (d) Visų skirstinių atveju palyginkite teorinius ir empirinius vidurkius
    bei dispersijas
+
+```{r}
+df_dist <- data.frame(
+                        norm1=norm1,
+                        norm2=norm2,
+                        eksp=eksp,
+                        tolyg=tolyg,
+                        ber=ber,
+                        bin=bin,
+                        puas=puas,
+                        geom=geom
+                      )
+
+comparisons <- do.call(data.frame, list(
+                   empiric.mean = apply(df_dist, 2, mean),
+                   empiric.var = apply(df_dist, 2, var),
+                   theor.mean = c(65, 65, 65, (54+76)/2, 0.4, 0.4 * 10, 65, 1/0.4),
+                   theor.var = c(
+                                 121,
+                                 1,
+                                 65^2,
+                                 1/12 * (76-54)^2,
+                                 0.4 * (1-0.4),
+                                 10 * 0.4 * (1-0.4),
+                                 65,
+                                 (1-0.4)/0.4^2
+                                )
+                ))
+kable(comparisons)
+```
+
+***
+
+
+   Padaryta su `r R.Version()$version.string`, `r R.Version()$platform`.
