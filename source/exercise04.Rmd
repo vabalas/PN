@@ -32,3 +32,6 @@ z05
 z95 <- qnorm(.95, 0, 1)
 z95
 ```
+
+***
+ Padaryta su `r R.Version()$version.string`, `r R.Version()$platform.
