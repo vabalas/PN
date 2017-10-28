@@ -34,4 +34,4 @@ z95
 ```
 
 ***
- Padaryta su `r R.Version()$version.string`, `r R.Version()$platform.
+ Padaryta su `r R.Version()$version.string`, `r R.Version()$platform`.
