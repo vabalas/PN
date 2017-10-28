@@ -1,1 +1,34 @@
-hello
+---
+title: "Statistinės duomenų analizės praktinės užduotys"
+date: "2017"
+output: pdf_document
+---
+4. __Kritinių reikšmių ir kvantilių radimas__
+
+```{r}
+set.seed(42)
+```
+
+  Rasti Chi-kvadrato, Fišerio, Stjudento, bei normalaus skirstinių kritines
+  reikšmes.
+  $\chi^2_{0.05}(8)$, $\chi^2_{0.95}(8)$, $F_{0.05}(100, 5)$, $F_{0.95}(100, 5)$,
+  $t_{0.05}(26)$, $t_{0.95}(26)$, $z_{0.05}$, $z_{0.95}$.
+
+```{r}
+chi05 <- qchisq(.05, 8)
+chi05
+chi95 <- qchisq(.95, 8)
+chi95
+f05 <- qf(.05, 100, 5)
+f05
+f95 <- qf(.95, 100, 5)
+f95
+t05 <- qt(.05, 26)
+t05
+t95 <- qt(.95, 26)
+t95
+z05 <- qnorm(.05, 0, 1)
+z05
+z95 <- qnorm(.95, 0, 1)
+z95
+```
