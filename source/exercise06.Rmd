@@ -5,7 +5,6 @@ output: pdf_document
 ---
 
 ```{r}
-library(pander)
 library(knitr)
 set.seed(42)
 ```
@@ -34,21 +33,37 @@ ks.test(sales, pnorm)
 ```
    _Normalumo prielaida_ galioja. Tikrinkime hipotezę:
 
-   $$H: \mu < \mu_0, \mu_0 = 520$$
+   $$H: \mu \leq \mu_0, \mu_0 = 520$$
 
 ```{r}
-t <- t.test(sales, alternative="greater", mu=mu_0)
-pv  <- t$p.value
+t <- t.test(sales, alternative="g", mu=mu_0, conf.level=.95)
+pv <- t$p.value
 t
 ```
-   $pv = `r pv` < \alpha = 0.05$, duomenys neprieštarauja hipotezei.
-   Statistiškai, pardavimai nebuvo didesni.
+   $pv = `r pv` > \alpha = 0.05$, duomenys neprieštarauja hipotezei.
+   Statistiškai, naujoji produkcija nėra blogiau perkama (imtis nedidelė).
 
    (b) _Hipotezė apie proporcijos reikšmę_ (ČM III.3.3.7). Naujo medikamento
    reklamoje teigiama, kad jis sukelia pašalines reakcijas ne daugiau kaip 1
    procentui pacientų . Ištyrus 1000 vaistą vartojusiu ligonių, nustatyta, kad
    pašalini poveikį pajuto 32 ligoniai. Ar duomenys neprieštarauja reklaminiam
    teiginiui? Reikšmingumo lygmuo 0.05.
+
+   Tikrinkime hipotezę
+
+   $$H: p = p_0, p_0 = 0.01 $$
+
+```{r}
+pv <- 2 * min(
+           pbeta(0.01, 32, 1000 - 32 + 1),
+           pbeta(0.01, 32 + 1, 1000 - 32)
+          )
+pv
+```
+
+   Čia formulės paiimtos iš `Pratybos1.pdf`. $pv = `r pv` < \alpha = 0.05$.
+   Hipotezę $H$ atmetame. Statistiškai, galime teigti, kad duomenys prieštarauja
+   reklaminiam teiginiui.
 
    (c) _Hipotezė apie proporcijos reikšmę_ (ČM III.3.10). Ekonomistas nori
    patikrinti, ar padaugėjo smulkių įmonių (procentais). Prieš dešimt metų jos
