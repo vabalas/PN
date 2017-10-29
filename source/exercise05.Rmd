@@ -221,5 +221,19 @@ kable(CI)
    Tarę, kad buvo stebimas _Puasono a. d._, raskite parametro $\lambda$ taškinį
    įvertinį, ir 0.95 pasikliovimo intervalą.
 
+```{r}
+m <- c(229, 211, 93, 35, 7, 1)
+
+lambda_hat  <- mean(m)
+names(lambda_hat) <- "$\\hat{\\lambda}$"
+kable(lambda_hat)
+
+lambda_l <- 1 / (2*length(m)) * qchisq(1 - (1 - .05/2), 2 * sum(m))
+lambda_u <- 1 / (2*length(m)) * qchisq(1 - .05/2, 2 * sum(m) + 2)
+
+CI <- c(lambda_l, lambda_u)
+names(CI) <- c("$\\underline{\\lambda}$", "$\\overline{\\lambda}$")
+kable(CI)
+```
 ***
   Padaryta su `r R.Version()$version.string`, `r R.Version()$platform`.
