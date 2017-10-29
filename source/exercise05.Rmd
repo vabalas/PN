@@ -173,6 +173,19 @@ kable(CI)
    lygmenys yra 0.8, 0.9, 0.99. Išspręskite uždavinį, tarę, kad buvo rasti trys
    defektingi gaminiai.
 
+```{r}
+CI <- c()
+
+for (alpha in  c(.2, .1, .01)) {
+  p_l <- 1 - qbeta(1 -alpha/2, 10 - 3 + 1, 3)
+  p_u <- 1 - qbeta(1 - (1 - alpha/2), 10 - 3, 3 + 1)
+  CI  <- rbind(CI, c(p_l, p_u))
+}
+CI <- cbind(CI, c(.8, .9, .99))
+colnames(CI) <- c("$\\underline{p}$","$\\overline{p}$", "$1 - \\alpha$")
+kable(CI)
+```
+
    (h) Sukonstruoti 0.95 pasikliautinį intervalą Puasono skirstinio vidurkiui,
    naudojant imtį `puas`.
 
