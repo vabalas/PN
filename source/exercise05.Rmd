@@ -189,6 +189,27 @@ kable(CI)
    (h) Sukonstruoti 0.95 pasikliautinį intervalą Puasono skirstinio vidurkiui,
    naudojant imtį `puas`.
 
+```{r}
+puas <- rpois(n, lambda=65)
+```
+
+   $1 - \alpha$ pasikliovimo intervalas _Puasono skirstinio_ parametrui $lambda$
+   yra $(\underline{\lambda}, \overline{\lambda})$, kur
+
+   $$\underline{\lambda} = \frac{1}{2n}\chi^2_{1 - \alpha / 2}(2T), (T = 1, 2, ...),$$
+   $$\overline{\lambda} = \frac{1}{2n}\chi^2_{\alpha / 2}(2T + 2),$$
+
+   o $T = n\bar{X}$. Jei $T = 0$, tai $\underline{\lambda} = 0$.
+
+```{r}
+lambda_l <- 1 / (2*n) * qchisq(1 - (1 - .05/2), 2 * sum(puas))
+lambda_u <- 1 / (2*n) * qchisq(1 - .05/2, 2 * sum(puas) + 2)
+
+CI <- c(lambda_l, lambda_u)
+names(CI) <- c("$\\underline{\\lambda}$", "$\\overline{\\lambda}$")
+kable(CI)
+```
+
    (i) Lentelėje pateikti skaičiai $m_i$ tokių vienodo ploto (0.25 $km^2$)
    pietinės Londono dalies rajonų, į kuriuos Antrojo pasaulinio karo metu
    pataikė po _i_ lėktuvų, sviedinių.
@@ -197,7 +218,7 @@ kable(CI)
    |-------|-----|-----|----|----|---|---|----------|
    | $m_i$ | 229 | 211 | 93 | 35 | 7 | 1 | 576      |
 
-   Tarę, kad buvo stebimas Puasono a. d., raskite parametro $\lambda$ taškinį
+   Tarę, kad buvo stebimas _Puasono a. d._, raskite parametro $\lambda$ taškinį
    įvertinį, ir 0.95 pasikliovimo intervalą.
 
 ***
