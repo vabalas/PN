@@ -146,6 +146,28 @@ kable(CI)
    (f) Sukonstruoti 0.95 pasikliautinį intervalą Bernulio skirstinio parametrui
    _p_, naudojant imtį `ber`.
 
+```{r}
+ber <- rbinom(n, size=1, prob=0.4)
+```
+   $1 - \alpha$ pasikliovimo intervalas _Bernulio skirstinio parametrui_ $p$
+   yra $(\underline{p}, \overline{p})$, kur
+
+   $$\underline{p} = 1 - \beta_{\alpha / 2}(n - T + 1, T), (T = 1, ..., n),$$
+   $$\overline{p} = 1 - \beta_{1 - \alpha / 2}(n - T, T + 1), (T = 0, ..., n - 1),$$
+
+   čia $T = n\bar{X}$, $\beta_{\alpha}(a, b)$ yra _beta skirstinio_ kritinės
+   reikšmės. Jei $T = 0$, tai $\underline{p} = 0$. Jei $T = 0$, tai
+   $\overline{p} = 1$.
+
+```{r}
+p_l <- 1 - qbeta(1 -.05/2, n - n*mean(ber) + 1, n*mean(ber))
+p_u <- 1 - qbeta(1 - (1 - .05/2), n - n*mean(ber), n*mean(ber) + 1)
+
+CI <- c(p_l, p_u)
+names(CI) <- c("$\\underline{p}$","$\\overline{p}$")
+kable(CI)
+```
+
    (g) Bandat kiekvieną iš 10 prietaisų, nebuvo rasta nė vieno defektinio. Raskite
    tikimybės, kad prietaisas defektinis, pasikliovimo intervalą, kai pasikliovimo
    lygmenys yra 0.8, 0.9, 0.99. Išspręskite uždavinį, tarę, kad buvo rasti trys
