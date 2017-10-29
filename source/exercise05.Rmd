@@ -100,7 +100,9 @@ eksp <- rexp(n, rate=1 / 65)
 
 ```{r}
 lambda_l <- 2*n * mean(eksp) / qchisq(1 - .05/2, 2*n)
+# [1] 66.70573
 lambda_u <- 2*n * mean(eksp) / qchisq(1 - (1 - .05/2), 2*n)
+# [1] 83.66272
 
 CI <- c(lambda_l, lambda_u)
 names(CI) <- c("$\\underline{\\lambda}$","$\\overline{\\lambda}$")
@@ -108,21 +110,40 @@ kable(CI)
 ```
 
    (e) Laikas nuo užsakymo pateikimo iki jo gavimo (pristatymo laikas) yra
-   pasiskirstęs pagal eksponentinį skirstinį. Lentelėje pateikiamos atsitiktinai
+   pasiskirstęs pagal _eksponentinį skirstinį_. Lentelėje pateikiamos atsitiktinai
    parinktų užsakymų pristatymo laikas (_i_ - eilės nr., $X_i$ - laikas).
 
    | _i_ | $X_i$ | _i_ | $X_i$ | _i_ | $X_i$ | _i_ | $X_i$ |
    |-----|-------|-----|-------|-----|-------|-----|-------|
-   | 1   | 10    | 6   | 6     | 11  | 10    | 16  | 7     |
-   | 2   | 10    | 7   | 7     | 12  | 6     | 17  | 6     |
-   | 3   | 6     | 8   | 8     | 13  | 13    | 18  | 16    |
-   | 4   | 11    | 9   | 9     | 14  | 8     | 19  | 9     |
-   | 5   | 8     | 10  | 10    | 15  | 12    | 20  | 5     |
+   | 1   | 10    | 6   | 7     | 11  | 10    | 16  | 7     |
+   | 2   | 10    | 7   | 11    | 12  | 6     | 17  | 6     |
+   | 3   | 6     | 8   | 12    | 13  | 13    | 18  | 16    |
+   | 4   | 11    | 9   | 12    | 14  | 8     | 19  | 9     |
+   | 5   | 8     | 10  | 6     | 15  | 12    | 20  | 5     |
 
    Raskite vidutinio pristatymo laiko taškinį įvertinį ir 0.9 pasikliovimo
    intervalą.
 
-   (f) Sukonstruoti 0.95 pasikliautin5 intervalą Bernulio skirstinio parametrui
+```{r}
+X <- c(10, 10, 6, 11, 8,
+       7, 11, 12, 12, 6,
+       10, 6, 12, 8, 12,
+       7, 6,  16, 9, 5)
+
+mean_hat <- mean(X)
+names(mean_hat) <- "$\\hat{\\lambda}$"
+kable(mean_hat)
+
+lambda_l <- 2*length(X) * mean(X) / qchisq(1 - .1/2, 2*length(X))
+lambda_u <- 2*length(X) * mean(X) / qchisq(1 - (1 - .1/2), 2*length(X))
+
+CI <- c(lambda_l, lambda_u)
+names(CI) <- c("$\\underline{\\lambda}$","$\\overline{\\lambda}$")
+kable(CI)
+
+```
+
+   (f) Sukonstruoti 0.95 pasikliautinį intervalą Bernulio skirstinio parametrui
    _p_, naudojant imtį `ber`.
 
    (g) Bandat kiekvieną iš 10 prietaisų, nebuvo rasta nė vieno defektinio. Raskite
