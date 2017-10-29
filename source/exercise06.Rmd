@@ -1,1 +1,79 @@
-hello
+---
+title: "Statistinės duomenų analizės praktinės užduotys"
+date: "2017"
+output: pdf_document
+---
+
+```{r}
+library(pander)
+library(knitr)
+set.seed(42)
+```
+
+6.  __Parametrinių hipotezių tikrinimas.__
+
+   (a) _Hipotezė apie normalaus skirstinio vidurkio reikšmę: Stujudento kriterijus
+   vienai normaliajai imčiai_ (ČM III.3.3.4).
+   Užkandžiais prekiaujanti firma nusprenė mėsainius su žuvimi pakeisti mėsainiais
+   su bananais. Dvylikoje užkandinių per savaitę buvo parduota atitinkamai
+   530, 540, 510, 500, 520, 532, 540, 515, 517, 522, 530 ir 510 naujųjų užkandžių.
+   Anksčiau kiekviena užkandinė parduodavo vidutiniškai po 520 senųjų užkandžių
+   per savaitę. Ar naujoji produkcija blogiau perkama? Reikšmingumo lygmuo 0.05.
+
+```{r}
+sales <- c(530, 540, 510, 500, 520, 532,
+           540, 515, 517, 522, 530, 510)
+
+alpha <- .05
+mu_0 <- 520
+```
+   Patikrinkime _normalumo prielaidą_. _Kolmogorovo - Smirnovo kriterijus_:
+
+```{r}
+ks.test(sales, pnorm)
+```
+   _Normalumo prielaida_ galioja. Tikrinkime hipotezę:
+
+   $$H: \mu < \mu_0, \mu_0 = 520$$
+
+```{r}
+t <- t.test(sales, alternative="greater", mu=mu_0)
+pv  <- t$p.value
+t
+```
+   $pv = `r pv` < \alpha = 0.05$, duomenys neprieštarauja hipotezei.
+   Statistiškai, pardavimai nebuvo didesni.
+
+   (b) _Hipotezė apie proporcijos reikšmę_ (ČM III.3.3.7). Naujo medikamento
+   reklamoje teigiama, kad jis sukelia pašalines reakcijas ne daugiau kaip 1
+   procentui pacientų . Ištyrus 1000 vaistą vartojusiu ligonių, nustatyta, kad
+   pašalini poveikį pajuto 32 ligoniai. Ar duomenys neprieštarauja reklaminiam
+   teiginiui? Reikšmingumo lygmuo 0.05.
+
+   (c) _Hipotezė apie proporcijos reikšmę_ (ČM III.3.10). Ekonomistas nori
+   patikrinti, ar padaugėjo smulkių įmonių (procentais). Prieš dešimt metų jos
+   sudarė 20 procentu visų įmonių. Šiuo metu iš 100 atsitiktinai parinktų įmoniu
+   27 buvo smulkios. Reikšmingumo lygmuo 0.05.
+
+   (d) _Hipotezė apie koreliacijos koeciento lygybę nuliui_ (ČM III.3.13).
+   Duomenys apie pardavėjo stažą (metais) ir jo pradinį atlyginimą (sutartiniais
+   vienetais) pateikti lentelėje. Ar atlyginimas priklauso nuo pardavėjo stažo?
+
+   | Stažas | Atlyginimas | Stažas | Atlyginimas |
+   |--------|-------------|--------|-------------|
+   | 2      | 100         | 8      | 500         |
+   | 1.5    | 300         | 7      | 400         |
+   | 3      | 400         | 5      | 400         |
+   | 10     | 600         | 4      | 250         |
+   | 12     | 600         | 2      | 200         |
+   | 4      | 300         | 1      | 100         |
+   | 2      | 100         | 6      | 350         |
+
+   (e) _Dviejų priklausomų normaliųjų imčių vidurkių palyginimas: Stjudento
+   kriterijus._ Tiriamas fizinių pratimų poveikis svoriui. Parenkamos 5 moterys
+   ir matuojamas ju svoris prieš ir po fizinių pratimų kurso. Gauti rezultatai:
+   84, 97, 77, 91, 85 (prieš) ir 78, 95, 73, 88, 80 (po). Rasti 0.9 pasikliautinį
+   intervalą svorių skirtumui ir patikrinti hipotezę: vidutinis svoris nepakinta.
+
+***
+  Padaryta su `r R.Version()$version.string`, `r R.Version()$platform`.
