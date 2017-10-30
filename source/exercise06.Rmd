@@ -23,7 +23,6 @@ set.seed(42)
 sales <- c(530, 540, 510, 500, 520, 532,
            540, 515, 517, 522, 530, 510)
 
-alpha <- .05
 mu_0 <- 520
 ```
    Patikrinkime _normalumo prielaidą_. _Kolmogorovo - Smirnovo kriterijus_:
@@ -54,10 +53,31 @@ t
    $$H: p = p_0, p_0 = 0.01 $$
 
 ```{r}
-pv <- 2 * min(
-           pbeta(0.01, 32, 1000 - 32 + 1),
-           pbeta(0.01, 32 + 1, 1000 - 32)
-          )
+proportion.test <- function(p_0, s_n, n, alternative="two.sided") {
+  # Hipothesis about proportion value.
+  # Returns p-value.
+
+  if (alternative == "two.sided" | alternative == "t"){
+    pv <- 2 * min(
+                   pbeta(p_0, s_n, n - s_n + 1),
+                   1 - pbeta(p_0, s_n + 1, n - s_n)
+                 )
+
+  } else if (alternative == "greater" | alternative == "g" ) {
+    pv <- pbeta(p_0, s_n, n - s_n + 1)
+
+  } else if (alternative == "less" | alternative == "l") {
+    pv <- 1 - pbeta(p_0, s_n + 1, n - s_n)
+
+  } else {
+    stop("'alternative' should be one of 'two.sided', 'greater', 'less' or first
+         letter of these terms!")
+  }
+
+  return(pv)
+}
+
+pv <- proportion.test(0.01, 32, 1000)
 pv
 ```
 
@@ -67,8 +87,20 @@ pv
 
    (c) _Hipotezė apie proporcijos reikšmę_ (ČM III.3.10). Ekonomistas nori
    patikrinti, ar padaugėjo smulkių įmonių (procentais). Prieš dešimt metų jos
-   sudarė 20 procentu visų įmonių. Šiuo metu iš 100 atsitiktinai parinktų įmoniu
+   sudarė 20 procentų visų įmonių. Šiuo metu iš 100 atsitiktinai parinktų įmonių
    27 buvo smulkios. Reikšmingumo lygmuo 0.05.
+
+   Tikrinkime hipotezę
+
+   $$H: p \geq p_0, p_0 = 0.2$$
+
+```{r}
+pv <- proportion.test(0.2, 27, 100, alternative="l")
+pv
+```
+
+  $pv = `r pv` > \alpha 0.05$. Hipotezės nėra pagrindo atmesti. Statistiškai,
+  smulkių įmonių padaugėjo.
 
    (d) _Hipotezė apie koreliacijos koeciento lygybę nuliui_ (ČM III.3.13).
    Duomenys apie pardavėjo stažą (metais) ir jo pradinį atlyginimą (sutartiniais
@@ -84,11 +116,45 @@ pv
    | 4      | 300         | 1      | 100         |
    | 2      | 100         | 6      | 350         |
 
+```{r}
+years <- c(2, 1.5, 3, 10, 12, 4, 2,
+           8, 7, 5, 4, 2, 1, 6)
+wages <- c(100, 300, 400, 600, 600, 300, 100,
+           500, 400, 400, 250, 200, 100, 350)
+```
+
+   Tikrinkime hipotezę
+
+   $$H: \rho = 0$$
+
+```{r}
+cor <- cor.test(years, wages)
+pv <- cor$p.value
+cor
+```
+
+   $pv = `r pv` < \alpha = 0.05$. Hipotezę atmetame. Statistiškai, koreliacija
+   nėra lygi nuliui.
+
    (e) _Dviejų priklausomų normaliųjų imčių vidurkių palyginimas: Stjudento
    kriterijus._ Tiriamas fizinių pratimų poveikis svoriui. Parenkamos 5 moterys
    ir matuojamas ju svoris prieš ir po fizinių pratimų kurso. Gauti rezultatai:
    84, 97, 77, 91, 85 (prieš) ir 78, 95, 73, 88, 80 (po). Rasti 0.9 pasikliautinį
    intervalą svorių skirtumui ir patikrinti hipotezę: vidutinis svoris nepakinta.
+
+
+```{r}
+before <- c(84, 97, 77, 91, 85)
+after <- c(78, 95, 73, 88, 80)
+
+t <- t.test(before, after, paired=TRUE, conf.level=0.9)
+pv <- t$p.value
+t
+```
+   $$H: \mu_1 = \mu_2$$
+
+   $pv = `r pv` < \alpha = 0.10$. Hipotezę atmetame. Statistiškai, vidutinis
+   svoris pakito.
 
 ***
   Padaryta su `r R.Version()$version.string`, `r R.Version()$platform`.
