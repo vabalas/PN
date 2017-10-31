@@ -157,6 +157,11 @@ colnames(ats)<-c("Motinos_amzius", "Rukymas",
 
 predict(modelis.c, ats, type = "response")
 summary(modelis.c)
+
+modelis.c.lm <- lm(Naujag_svoris~Motinos_amzius+Rukymas+Hipertonija+Motinos_svoris, 
+                    data = dat.c)
+predict(modelis.c.lm, ats)
+summary(modelis.c.lm)
 ```
 
 ***
