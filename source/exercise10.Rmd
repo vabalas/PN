@@ -33,7 +33,6 @@ dat.a <- matrix(c(254, 124,  230, 108,  254,  85,  300, 152,  320, 140,
 
 dat.a<-as.data.frame(dat.a)
 colnames(dat.a) <- c("Treniruotes", "Komplimentai")
-dat.a
 ```
 
    Joje užfiksuota, kiek kartų kiekvienas vyras kursuose treniravosi buti
@@ -75,7 +74,6 @@ dat.b <- matrix(c(17, 79,  18, 83,  16, 78,  18, 82,  16, 78,
 
 dat.b<-as.data.frame(dat.b)
 colnames(dat.b) <- c("vand_temp", "maud_sk")
-dat.b
 ```
 
    Ištirkite, ar vandens temperatura įtakoja mauduolių skaičių. Reikšmingumo
@@ -125,7 +123,6 @@ dat.c <- matrix(c(88, 24, 106.5,  83,  4, 74.5,  88, 20,  93.5,
 
 dat.c<-as.data.frame(dat.c)
 colnames(dat.c) <- c("x1", "x2", "y")
-dat.c
 ```
 
    Kokią tetos dovaną prognozuotumete valdininkui, jei objektas privatizuotas
@@ -171,7 +168,6 @@ dat.d <- matrix(c(91,  6.0, 85, 51.1,  33, 7.0, 74, 45.7,  73,  6.1, 83, 49.2,
 
 dat.d<-as.data.frame(dat.d)
 colnames(dat.d) <- c("y", "x1", "x2", "x3")
-dat.d
 ```
 
    Ar tiesinės regresijos modelis tinka? Ar visi kintamieji jame reikalingi?
