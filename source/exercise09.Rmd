@@ -1,1 +1,423 @@
-hello
+---
+title: "Statistinės duomenų analizės praktinės užduotys"
+date: "2017"
+output: pdf_document
+---
+
+9. __Dispersinė analizė.__
+
+   (a) _Vienfaktorė dispersinė analizė: kelių normaliųjų vidurkių palyginimas._
+   Iš darbininkų, aptarnaujančių didelės įmonės surinkimo konvejerį, buvo atrinkti
+   4 darbininkai ir kiekvienam iš jų buvo užfiksuotas tam tikros detalės
+   surinkimo laikas.
+
+   | Darbininkas |      |      |      |      |      |      |      |      |
+   |-------------|------|------|------|------|------|------|------|------|
+   |      1      | 24,2 | 22,2 | 24,5 | 21,1 | 22,0 |      |      |      |
+   |      2      | 19,4 | 21,1 | 16,2 | 21,2 | 21,6 | 17,9 | 19,6 |      |
+   |      3      | 19,0 | 23,1 | 23,8 | 22,8 |      |      |      |      |
+   |      4      | 19,9 | 15,7 | 15,2 | 19,8 | 18,9 | 16,1 | 16,2 | 18,5 |
+
+   Ar skiriasi darbininkai pagal detalės surinkimo laiką?
+
+```{r}
+dat.a <- matrix(
+                c(24.2, 1,  22.2, 1,  24.5, 1,  21.1, 1,  22.0, 1,
+                  19.4, 2,  21.1, 2,  16.2, 2,  21.2, 2,  21.6, 2,
+                  17.8, 2,  19.6, 2,  19.0, 3,  23.1, 3,  23.8, 3,
+                  22.8, 3,  19.9, 4,  15.7, 4,  15.2, 4,  19.8, 4,
+                  18.9, 4,  16.1, 4,  16.2, 4,  18.5, 4),
+                byrow=TRUE,
+                nrow=24,
+                ncol=2
+              )
+
+dat.a <- as.data.frame(dat.a)
+colnames(dat.a) <- c("sur_laik", "darb")
+
+aov.a <- aov(darb~sur_laik, data = dat.a)
+summary(aov.a)
+
+```
+
+   $pv = 0.00237 < \alpha = 0.05$, atmetama $H_0$, grupėse vidurkiai skiriasi.
+   Duomenys leidžia teigti, jog darbininkai nevienodai greitai surenka detales.
+
+   (b) _Vienfaktorė dispersinė analizė: kelių normaliųjų vidurkių palyginimas._
+   (ČM II.2.2) Norėdamas rasti optimalų darbo režimą, firmos prezidentas trijuose
+   vienodo našumo padaliniuose (kiekviename dirba po 6 darbuotojus) išbandė
+   skirtingas 48 valandų darbo savaites: 5 dienų, 4 dienų ir 3.5 dienos.
+   Eksperimentas vyko vienus metus. Lentelėje pateikta, kiek per vieną savaitę
+   vidutiniškai kiekvienas darbuotojas pagamino detalių.
+
+   | 5 dienos | 4 dienos | 3,5 dienos |
+   |----------|----------|------------|
+   |   360    |   340    |    371     |
+   |   302    |   350    |    365     |
+   |   333    |   306    |    303     |
+   |   351    |   337    |    300     |
+   |   329    |   371    |    336     |
+   |   340    |   365    |    365     |
+
+   Ar kuris nors savaitės darbo režimas davė statistiškai reikšmingai daugiau
+   naudos nei likusieji?
+
+```{r}
+kiekis <- c(360, 302, 333, 351, 329, 340,
+            340, 350, 306, 337, 371, 365,
+            371, 365, 303, 300, 336, 365)
+dienos <- c(rep("d5",6), rep("d4",6), rep("d3.5",6))
+dat.b <- data.frame(kiekis, dienos)
+
+aov.b <- aov(kiekis ~ as.factor(dienos), data = dat.b)
+summary(aov.b)
+```
+
+   $pv = 0.834 > \alpha = 0.05$, neatmetama $H_0$, grupėse vidurkiai nesiskiria.
+   Joks darbo režimas statistiškai reikšmingiau daugiau naudos nedavė.
+
+   (c) _Vienfaktorė dispersinė analizė: kontrastai._ (ČM II.2.8) Kultūros savitumų
+   tyrinėtojas skaičiavo, kiek gestų per dviejų valandų pranešimą padarė skirtingų
+   šalių pranešėjai. Ar galima teigti, kad vidutinis kilikiečių gestikuliavimo
+   lygis yra lygus nubų ir ilyrų vidutinių gestikuliavimo lygių vidurkiui?
+
+   | Šalis    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+   |----------|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+   | Nubija   | 41 | 37 | 40 | 36 | 28 | 38 | 44 | 27 | 28 | 39 | 41 | 39 | 42 | 35 | 44 |
+   | Ilyrija  |  9 |  5 | 12 |  6 |  7 | 11 |  6 |  3 |  5 |  6 | 12 |  5 |  9 |  4 |  5 |
+   | Kilikija | 19 | 21 | 15 | 21 | 23 | 27 | 31 | 16 | 15 | 14 | 19 | 17 | 15 | 28 | 27 |
+
+   Šiame uždavinyje tikrinama hipotezė $H: \mu_3 = (\mu_1 + \mu_2) / 2$,
+   ekvivalenti hipotezei $\mu_1 = \mu_2 - \mu_3 = 0$, todėl kontrastai čia yra
+   $C_1 = 1, C_2 = 1, C_3 = -2$.
+
+```{r}
+gestai <- c(41, 37, 40, 36, 28, 38, 44, 27, 28, 39, 41, 39, 42, 35, 44,
+            9, 5, 12, 6, 7, 11, 6, 3, 5, 6, 12, 5, 9, 4, 5,
+            19, 21, 15, 21, 23, 27, 31, 16, 15, 14, 19, 17, 15, 28, 27)
+salis <- as.factor(c(rep("Nubija",15), rep("Ilyrija",15), rep("Kilikija",15)))
+dat.c <- data.frame(gestai, salis)
+
+aov.c <- aov(gestai ~ salis,data = dat.c)
+summary.aov(aov.c)
+# p-value=0.834, neatmetama H0, grupese vidurkiai nesiskiria.
+
+contrasts(dat.c$salis)<-c(1,1,-2)
+summary.lm(aov(gestai ~ salis,data = dat.c))
+```
+
+   (d) _Dvifaktorė dispersinė analizė: hipotezių apie dviejų faktorių įtaką bei
+   jų sąveiką tikrinimas._ (ČM II.3.1) Sąvoka "brangus" neretai asocijuojasi su
+   sąvoka "geras". 54 tiriamieji buvo suskirstyti į tris grupes: valstiečius,
+   verslininkus ir inteligentus. Kiekvienam tiriamajam buvo parodytas tas pats
+   abstraktus paveikslas. Kartu buvo pasakoma viena iš trijų tariamų paveikslo
+   kainų: maža, vidutinė arba didelė. Tiriamasis turėjo balais (iki 100)
+   įvertinti paveikslą. Apklausos rezultatai pateikti lentelėse.
+
+   |              |        Maža       |      Vidutinė     |       Didelė      |
+   |--------------|-------------------|-------------------|-------------------|
+   | Valstiečiai  | 52 50 48 51 53 52 | 55 63 52 64 59 62 | 55 55 56 55 54 54 |
+   | Verslininkai | 47 45 45 44 46 43 | 65 56 66 57 69 60 | 78 72 76 75 74 77 |
+   | Inteligentai | 56 60 58 61 57 62 | 70 75 71 74 72 75 | 73 73 69 76 72 70 |
+
+   Ar skirtingų profesijų atstovai vienodai vertina abstraktųjį meną? Ar paveikslo
+   kaina turi įtakos vertinimams? Ar kainos didėjimas vienodai paveikė visų
+   profesijų atstovų nuomonę?
+
+```{r}
+dat.d <- data.frame(
+  grupe=as.factor(
+    c(
+      rep("Valstietis", 18),
+      rep("Verslininkas", 18),
+      rep("Inteligentas", 18)
+    )
+  ),
+  kaina=as.factor(
+    rep(
+      c(
+        rep("Maza", 6),
+        rep("Vidutine", 6),
+        rep("Didele", 6)
+      ),
+    3)
+  ),
+  rezultatai=c(
+    52, 50, 48, 51, 53, 52,
+    55, 63, 52, 64, 59, 62,
+    55, 55, 56, 55, 54, 54,
+    47, 45, 45, 44, 46, 43,
+    65, 56, 66, 57, 69, 60,
+    78, 72, 76, 75, 74, 77,
+    56, 60, 58, 61, 57, 62,
+    70, 75, 71, 74, 72, 75,
+    73, 73, 69, 76, 72, 70
+  )
+)
+
+aov.d <- aov(rezultatai ~ grupe * kaina, data=dat.d)
+summary(aov.d)
+```
+
+   Faktoriai `grupe`, `kaina`, ir jų saveika `grupe:kaina` yra reikšmingi,
+   vadinasi balas priklauso ir nuo grupės, ir nuo kainos. Tačiau, be to,
+   kainų didėjimas nevienodai paveikė skirtingų profesijų atstovų nuomonę,
+   dėl sąveikos tarp faktorių.
+
+   (e) (ČM II.3.2) Chemijos laboratorija išbandė tris valiklius (I, II ir III).
+   Kiekvienu iš jų buvo valomos keturių rūšių dėmės (purvo, riebalų, vyno, rašalo)
+   Stebėta, per kiek sekundžių dėmė išnyksta. Bandymas buvo pakartotas keturis kartus.
+   Duomenys pateikti lentelėje.
+
+   |     |    Purvo    |    Riebalų  |     Vyno    |    Rašalo   |
+   |-----|-------------|-------------|-------------|-------------|
+   | I   | 12 10  9 11 | 13 13 14 14 | 18 18 19 17 | 25 26 17 25 |
+   | II  | 12 11 10 12 | 14 15 14 15 | 18 17 17 16 | 20 21 22 22 |
+   | III |  8  9  9 10 | 16 13 15 14 | 17 18 18 19 | 24 24 24 25 |
+
+   Ką galima pasakyti apie valiklių efektyvumą?
+
+```{r}
+dat.e <- data.frame(
+  valiklis=as.factor(
+    c(
+      rep("I", 16),
+      rep("II", 16),
+      rep("III", 16)
+    )
+  ),
+  deme=as.factor(
+    rep(
+      c(
+        rep("Purvas", 4),
+        rep("Riebalai", 4),
+        rep("Vynas", 4),
+        rep("Rasalas", 4)
+      ),
+    3)
+  ),
+  laikas=c(
+    12, 10,  9, 11, 13, 13, 14, 14, 18, 18, 19, 17, 25, 26, 17, 25,
+    12, 11, 10, 12, 14, 15, 14, 15, 18, 17, 17, 16, 20, 21, 22, 22,
+     8,  9,  9, 10, 16, 13, 15, 14, 17, 18, 18, 19, 24, 24, 24, 25
+  )
+)
+
+aov.e <- aov(laikas ~ valiklis * deme, data=dat.e)
+summary(aov.e)
+```
+
+   Faktorius `deme` buvo reikšmingas, `valiklis` priešingai. Vadinasi, dėmės
+   turėjo įtakos plovimo laikui. Tiesa, dėmės dėl sąveikos su valikliais turėjo
+   nevienodą įtaką plovimo laikui, jis priklausė nuo naudojamo valiklio.
+
+   (f) _Blokuotųjų duomenų vienfaktorė dispersinė analizė._ (ČM II.4.2) Prekybos
+   centro vadybininkas ieško tinkamos vietos indų plovikliui "Laumė". Ploviklis
+   savaitę buvo laikomas viršutinėje, vidurinėje ir apatinėje lentynose.
+   Užfiksuota, kiek ploviklio indelių parduota. Eksperimente dalyvavo 7 parduotuvės,
+   kuriose lentynų keitimo tvarka buvo randomizuota. Duomenys pateikti lentelėje.
+
+   | Parduotuvė | Viršutinė | Vidurinė | Apatinė |
+   |------------|-----------|----------|---------|
+   | Pirma      |    10     |    12    |    8    |
+   | Antra      |     5     |     6    |    4    |
+   | Trečia     |    16     |    18    |   15    |
+   | Ketvirta   |    30     |    38    |   25    |
+   | Penkta     |    19     |    19    |   17    |
+   | Šešta      |    29     |    30    |   24    |
+   | Septinta   |    39     |    41    |   36    |
+
+   Ar galima teigti, kad parduodamų ploviklių skaičius priklauso nuo to, kurioje
+   lentynoje jie laikomi?
+
+```{r}
+dat.f  <- data.frame(
+  parduotuve=as.factor(
+    rep(
+      c("Pirma", "Antra", "Trecia", "Ketvirta", "Penkta", "Sesta", "Septinta"),
+      3
+    )
+  ),
+  lentyna=as.factor(
+    c(
+      rep("virsutine", 7),
+      rep("vidurine", 7),
+      rep("apatine", 7)
+    )
+  ),
+  pardavimai=c(
+    10, 5, 16, 30, 19, 29, 39,
+    12, 6, 18, 38, 19, 30, 41,
+    8, 4, 15, 25, 17, 24, 36
+  )
+)
+
+dependant.m  <- with(dat.f,
+  cbind(
+    pardavimai[lentyna=="virsutine"],
+    pardavimai[lentyna=="vidurine"],
+    pardavimai[lentyna=="apatine"]
+  )
+)
+
+model.f <- lm(dependant.m ~ 1)
+rfactor <- factor(c("virsutine", "vidurine", "apatine"))
+
+# install.packages("car")
+library(car)
+
+aov.f  <- Anova(
+  model.f,
+  idata = data.frame(rfactor),
+  idesign = ~rfactor,
+  type="III"
+)
+summary(aov.f)
+```
+   Patikrinkime, ar patenkinta sferiškumo prielaida. (Ar parduotuvių blokai
+   neįneša papildomos variacijos). _Mauchly Tests for Sphericity_ skiltyje,
+   su p-reikšme $0.043$, (nelabai reikšmingai) sferiškumo hipotezę atmetame.
+   Sferiškumo prielaida neišpildyta, tai žiūrime į _Greenhouse-Geisser_
+   kriterijų, kur p-reikšmė $0.01188 < \alpha = 0.05$. Čia hipotezė atmetama,
+   vadinasi teigti, jog pardavimai skirtingose lentynose skiriasi, šie duomenys
+   leidžia. Tiesa, dėl sferiškumo sąlygos negaliojimo, blokuotųjų duomenų modelis
+   nebuvo tinkamas.
+
+   (g) _Blokuotųjų duomenų vienfaktorė dispersinė analizė._ (ČM II.4.4) Eksperimento
+   metu buvo skaičiuota, kiek važiavimo klaidų padaro kiekvienas ką tik teises
+   gavęs vairuotojas, važiuodamas kiekviena keturių skirtingų modelių mašina.
+   Duomenys pateikti lentelėje.
+
+   | Vairuotojas |  A  |  B  |  C  |  D  |
+   |-------------|-----|-----|-----|-----|
+   |      1      |  13 |  10 |  15 |  17 |
+   |      2      |  12 |  11 |  14 |  15 |
+   |      3      |  13 |  12 |  15 |  17 |
+   |      4      |  20 |  20 |  26 |  28 |
+   |      5      |  13 |  11 |  16 |  10 |
+   |      6      |  17 |  22 |  27 |  26 |
+   |      7      |  21 |  21 |  25 |  27 |
+   |      8      |  16 |  12 |  14 |  16 |
+   |      9      |  19 |  20 |  25 |  24 |
+   |     10      |  21 |  21 |  24 |  26 |
+
+   Ar visų modelių mašinomis važiuojama vienodai sėkmingai?
+
+```{r}
+dat.g <- data.frame(
+  vairuotojas=as.factor(1:10),
+  modelis=c(
+    rep("A", 10),
+    rep("B", 10),
+    rep("C", 10),
+    rep("D", 10)
+  ),
+  klaidos=c(
+    13, 12, 13, 20, 13, 17, 21, 16, 19, 21, 10, 11, 12, 20, 11, 22, 21, 12, 20, 21,
+    15, 14, 14, 26, 16, 27, 25, 14, 25, 24, 17, 15, 17, 28, 10, 26, 27, 16, 24, 26
+  )
+)
+
+dependant.g <- with(dat.g,
+  cbind(
+    klaidos[modelis=="A"],
+    klaidos[modelis=="B"],
+    klaidos[modelis=="C"],
+    klaidos[modelis=="D"]
+  )
+)
+
+model.g <- lm(dependant.g ~ 1)
+rfactor <- factor(c("A", "B", "C", "D"))
+
+library(car)
+
+aov.g  <- Anova(
+  model.g,
+  idata = data.frame(rfactor),
+  idesign = ~rfactor,
+  type="III"
+)
+summary(aov.g)
+```
+
+   Čia _Mauchly_ testo p-reikšmė $0.096502$, hipotezės nėra pagrindo atmesti.
+   Sferiškumo prielaida tenkinama (Blokuotųjų duomenų modelis čia yra tinkamas).
+   Toliau, _Greenhouse-Geisser_ kriterijaus p-reikšmė $0.0001145 < \alpha = 0.05
+   \Rightarrow$ duomenys leidžia teigti, kad automobilių modeliai vairuotojams
+   turėjo įtakos darant klaidas.
+
+
+   (h) _Blokuotųjų duomenų dvifaktorė dispersinė analizė._ (ČM II.4.5) Sesijos
+   metu studentai laiko keturis egzaminus (kalbos, politologijos, matematikos ir
+   logikos). Duomenys pateikti lentelėje.
+
+   | Lytis   | Kalbos | Politologijos | Matematikos | Logikos |
+   |---------|--------|---------------|-------------|---------|
+   | Vyrai   |   9    |      10       |      9      |    7    |
+   |         |   7    |       8       |      7      |    5    |
+   |         |   5    |       8       |      7      |    6    |
+   |         |   7    |       8       |      6      |    3    |
+   |         |   7    |       9       |      6      |    5    |
+   |         |   9    |       8       |      7      |    6    |
+   | Moterys |   6    |       5       |      5      |    2    |
+   |         |   8    |       8       |      7      |    6    |
+   |         |   9    |      10       |      8      |    8    |
+   |         |  10    |      10       |     10      |    9    |
+   |         |  10    |       9       |      8      |    6    |
+   |         |   8    |       9       |      5      |    4    |
+
+   Ar visi egzaminai išlaikyti vienodai gerai? Ar studentai ir studentės egzaminus
+   išlaikė vienodai gerai? Ar kuris nors egzaminas itin patiko studentėms?
+
+```{r}
+dat.h <- data.frame(
+  lytis=as.factor(c(rep("vyras", 6), rep("moteris", 6))),
+  kalbos=c(9, 7, 5, 7, 7, 9, 6, 8, 9, 10, 10, 9),
+  politologija=c(10, 8, 8, 8, 9, 8, 5, 8, 10, 10, 9, 9),
+  matematika=c(9, 7, 7, 6, 6, 7, 5, 7, 8, 10, 8, 5),
+  logika=c(7, 5, 6, 3, 5, 6, 2, 6, 8, 9, 6, 4)
+)
+```
+
+   (i) _Blokuotųjų duomenų dvifaktorė dispersinė analizė._ (ČM 4.5 pvz.) Tris
+   grupes karių apmokė skirtingi seržantai. Po apmokymo visų trijų grupių kariai
+   šaudė į taikinius naudodami indėniškąjį (I), mongoliškąjį (M) ir patobulintąjį
+   (su optiniu taikliu, P) lankus. Surinkti taškai pateikti lentelėje.
+
+   | Grupė |  I  |  M  |  P  |
+   |-------|-----|-----|-----|
+   |   1   |  33 |  30 |  35 |
+   |       |  32 |  31 |  34 |
+   |       |  33 |  32 |  35 |
+   |       |  32 |  30 |  36 |
+   |       |  33 |  31 |  36 |
+   |       |  27 |  32 |  37 |
+   |   2   |  31 |  31 |  35 |
+   |       |  36 |  32 |  34 |
+   |       |  29 |  30 |  35 |
+   |       |  31 |  31 |  34 |
+   |       |  31 |  30 |  35 |
+   |       |  30 |  29 |  35 |
+   |   3   |  25 |  24 |  34 |
+   |       |  24 |  23 |  33 |
+   |       |  26 |  24 |  36 |
+   |       |  25 |  25 |  35 |
+   |       |  25 |  23 |  34 |
+   |       |  26 |  24 |  35 |
+
+   Ar galima teigti, kad skirtingų grupių karių taiklumas skiriasi? Ar galima
+   teigti, kad ne iš visų lankų vienodai gerai pataikoma? Ką dar galima pasakyti
+   apie seržantų darbą?
+
+```{r}
+dat.i <- data.frame(
+  grupe=as.factor(c(rep(1, 6), rep(2, 6), rep(3, 6))),
+  lankasI=c(33, 32, 33, 32, 33, 27, 31, 36, 29, 31, 31, 30, 25, 24, 26, 25, 25, 26),
+  lankasM=c(30, 31, 32, 30, 31, 32, 31, 32, 30, 31, 30, 29, 24, 23, 24, 25, 23, 24),
+  lankasP=c(35, 34, 35, 36, 36, 37, 35, 34, 35, 34, 35, 35, 34, 33, 36, 35, 34, 35)
+)
+```
+
+***
+   Padaryta su `r R.Version()$version.string`, `r R.Version()$platform`.
