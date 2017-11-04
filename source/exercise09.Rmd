@@ -277,11 +277,11 @@ summary(aov.f)
    Patikrinkime, ar patenkinta sferiškumo prielaida. (Ar parduotuvių blokai
    neįneša papildomos variacijos). _Mauchly Tests for Sphericity_ skiltyje,
    su p-reikšme $0.043$, (nelabai reikšmingai) sferiškumo hipotezę atmetame.
-   Sferiškumo prielaida neišpildyta, tai žiūrime į _Greenhouse-Geisser_
+   Sferiškumo prielaida neišpildyta $\Rightarrow$ žiūrime į _Greenhouse-Geisser_
    kriterijų, kur p-reikšmė $0.01188 < \alpha = 0.05$. Čia hipotezė atmetama,
    vadinasi teigti, jog pardavimai skirtingose lentynose skiriasi, šie duomenys
-   leidžia. Tiesa, dėl sferiškumo sąlygos negaliojimo, blokuotųjų duomenų modelis
-   nebuvo tinkamas.
+   leidžia.
+
 
    (g) _Blokuotųjų duomenų vienfaktorė dispersinė analizė._ (ČM II.4.4) Eksperimento
    metu buvo skaičiuota, kiek važiavimo klaidų padaro kiekvienas ką tik teises
@@ -342,10 +342,9 @@ summary(aov.g)
 ```
 
    Čia _Mauchly_ testo p-reikšmė $0.096502$, hipotezės nėra pagrindo atmesti.
-   Sferiškumo prielaida tenkinama (Blokuotųjų duomenų modelis čia yra tinkamas).
-   Toliau, _Greenhouse-Geisser_ kriterijaus p-reikšmė $0.0001145 < \alpha = 0.05
-   \Rightarrow$ duomenys leidžia teigti, kad automobilių modeliai vairuotojams
-   turėjo įtakos darant klaidas.
+   Sferiškumo prielaida tenkinama. p-reikšmė $0.000005821 < \alpha = 0.05
+   \Rightarrow$ hipotezė atmetama, duomenys leidžia teigti, kad automobilių
+   modeliai vairuotojams turėjo įtakos darant klaidas.
 
 
    (h) _Blokuotųjų duomenų dvifaktorė dispersinė analizė._ (ČM II.4.5) Sesijos
