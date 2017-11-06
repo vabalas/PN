@@ -99,13 +99,13 @@ eksp <- rexp(n, rate=1 / 65)
    $$\overline{\theta} = \frac{2n\bar{X}}{\chi^2_{1 - \alpha / 2}(2n)},$$
 
 ```{r}
-lambda_l <- 2*n * mean(eksp) / qchisq(1 - .05/2, 2*n)
+theta_l <- 2*n * mean(eksp) / qchisq(1 - .05/2, 2*n)
 # [1] 66.70573
-lambda_u <- 2*n * mean(eksp) / qchisq(1 - (1 - .05/2), 2*n)
+theta_u <- 2*n * mean(eksp) / qchisq(1 - (1 - .05/2), 2*n)
 # [1] 83.66272
 
-CI <- c(lambda_l, lambda_u)
-names(CI) <- c("$\\underline{\\lambda}$","$\\overline{\\lambda}$")
+CI <- c(theta_l, theta_u)
+names(CI) <- c("$\\underline{\\theta}$","$\\overline{\\theta}$")
 kable(CI)
 ```
 
@@ -131,14 +131,14 @@ X <- c(10, 10, 6, 11, 8,
        7, 6,  16, 9, 5)
 
 mean_hat <- mean(X)
-names(mean_hat) <- "$\\hat{\\lambda}$"
+names(mean_hat) <- "$\\hat{\\theta}$"
 kable(mean_hat)
 
-lambda_l <- 2*length(X) * mean(X) / qchisq(1 - .1/2, 2*length(X))
-lambda_u <- 2*length(X) * mean(X) / qchisq(1 - (1 - .1/2), 2*length(X))
+theta_l <- 2*length(X) * mean(X) / qchisq(1 - .1/2, 2*length(X))
+theta_u <- 2*length(X) * mean(X) / qchisq(1 - (1 - .1/2), 2*length(X))
 
-CI <- c(lambda_l, lambda_u)
-names(CI) <- c("$\\underline{\\lambda}$","$\\overline{\\lambda}$")
+CI <- c(theta_l, theta_u)
+names(CI) <- c("$\\underline{\\theta}$","$\\overline{\\theta}$")
 kable(CI)
 
 ```
