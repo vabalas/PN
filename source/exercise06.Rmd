@@ -156,5 +156,110 @@ t
    $pv = `r pv` < \alpha = 0.10$. Hipotezę atmetame. Statistiškai, vidutinis
    svoris pakito.
 
+   (f) _Dviejų priklausomų normaliųjų imčių vidurkių palyginimas: Stjudento
+   kriterijus._ Krakmolo kiekis bulvėse nustatomas dviem būdais. Norint palyginti
+   tuos būdus, buvo paimta 16 bulvių ir kiekvienoje iš jų krakmolo kiekis nustatytas
+   dviem būdais. Gauti rezultatai (krakmolingumas procentais) surašyti lentelėje.
+
+   | Eil. Nr. | I būdas | II būdas | Eil. Nr. | I būdas | II būdas |
+   |----------|---------|----------|----------|---------|----------|
+   |    1     |  21.7   |   21.5   |    9     |  14.0   |   13.9   |
+   |    2     |  18.7   |   18.7   |   10     |  17.2   |   17.0   |
+   |    3     |  18.3   |   18.3   |   11     |  21.7   |   21.4   |
+   |    4     |  17.5   |   17.4   |   12     |  18.6   |   18.6   |
+   |    5     |  18.5   |   18.3   |   13     |  17.9   |   18.0   |
+   |    6     |  15.6   |   15.4   |   14     |  17.7   |   17.6   |
+   |    7     |  17.0   |   16.7   |   15     |  18.3   |   18.5   |
+   |    8     |  16.6   |   16.9   |   16     |  15.6   |   15.5   |
+
+   Laikydami, kad nustatomas krakmolingumo procentas turi normalųjį skirstinį
+   patikrinkite prielaidą, kad abu metodai yra ekvivalentūs.
+
+```{r}
+```
+
+   (g) _Dviejų nepriklausomų normaliųjų imčių vidurkių palyginimas. Stjudento
+   kriterijus._ Matuojamas 16 detalių, pagamintų vieną dieną, atsparumas:
+
+   $$13.1, 12.8, 11.9, 12.4, 13.5, 13.5, 12.0, 13.8,$$
+   $$10.6, 12.4, 13.5, 11.7, 13.9, 11.5, 12.5, 11.9$$
+
+   Kitų 9 detalių, pagamintų kitą dieną, atsparumas:
+
+   $$13.7, 13.5, 14.2, 15.6, 14.8, 14.3, 15.4, 14.0, 15.1$$
+
+   Patikrinkite hipotezę, kad abi dienas buvo gaminamos vidutiniškai vienodo
+   atsparumo detalės.
+
+   (h) _Dviejų nepriklausomų normaliųjų imčių vidurkių palyginimas: Stjudento
+   kriterijus._ Lentelėje pateikti dviejų nepriklausomų eksperimentų su musėmis
+   rezultatai. Pirmajame bandyme tam tikrais nuodais musės buvo veikiamos 30
+   sekundžių, antrajame - 60 sekundžių. Paralyžuojantį nuodų povekį nusako
+   vadinamasis reakcijos laikas, praėjęs nuo musės sąlyčio su nuodais iki to
+   momento, kai musė jau nebegali stovėti. Reikia patikrinti hipotezę, kad
+   vidutinis reakcijos laikas antrajame bandyme yra trumpesnis.
+
+   _I bandymas_
+
+   | $i$ | $X_i$ | $i$ | $X_i$ |
+   |-----|-------|-----|-------|
+   |  1  |  4.9  |  9  | 17.1  |
+   |  2  | 16.2  | 10  | 17.9  |
+   |  3  | 25.4  | 11  | 26.6  |
+   |  4  |  8.6  | 12  | 33.7  |
+   |  5  | 10.9  | 13  | 33.9  |
+   |  6  | 12.5  | 14  | 28.1  |
+   |  7  | 12.9  | 15  | 15.9  |
+   |  8  |  9.8  | 16  | 66.2  |
+
+   _II bandymas_
+
+   | $i$ | $Y_i$ | $i$ | $Y_i$ |
+   |-----|-------|-----|-------|
+   |  1  | 10.8  |  9  | 30.6  |
+   |  2  | 10.9  | 10  | 36.3  |
+   |  3  | 13.3  | 11  | 26.9  |
+   |  4  | 13.4  | 12  | 22.4  |
+   |  5  | 17.1  | 13  | 51.9  |
+   |  6  | 19.2  | 14  | 23.8  |
+   |  7  | 25.0  | 15  | 26.9  |
+   |  8  | 26.0  |     |       |
+
+   _Nurodymas._ Iš histogramų pavidalo matome, kad $X$ ir $Y$ skirstiniai labai
+   asimetriški. Todėl reikėtų atlikti stebimų dydžių transformacijas, kad naujo
+   a.d. skirstiniai būtų patenkinamai aprašomi normaliuoju skirstiniu, po to remtis
+   Stjudento kriterijumi. Nesunki įsitikinti, kad nagrinėjame pavyzdyje
+   $\ln X$ ir $\ln Y$ tiksliau aprašomi normaliuoju skirstiniu, negu a.d. $X$
+   ir $Y$. Kitaip sakant, stebimieji a. d. tiksliau aprašomi lognormaliuoju
+   skirstiniu.
+
+   (i) _Dviejų nepriklausomų normaliųjų imčių dispersijos palyginimas: Fišerio
+   kriterijus._ Naudojant 6.g pratimo duomenis patikrinti hipotezę, kad abi
+   dienas pagamintų detalių atsparumai turi vienodas dispersijas.
+
+   (j) _Proporcijų palyginimas._ Dviejose šalyse buvo pateiktas klausimas
+   "ar bijote vaikščioti gatvėje naktį?". Pirmoje šalyje iš $n_1 = 300$ apklaustųjų
+   buvo gauta $S_1 = 120$ teigiamų atsakymų. Antroje šalyje gauta $S_2 = 148$
+   teigiamų atsakymų tarp $n_2 = 200$ apklaustųjų. Patikrinti hipotezę, kad
+   abiejose šalyse žmonės vienodai baiminasi vaikščioti gatvėje naktį.
+
+   (k) _Proporcijų palyginimas._ (ČM III.4.9) Nepriklausomas ekspertas tiria, kiek
+   kartų garantinio TV taisymo prireikė televizoriams, surinktiems Pietryčių
+   Azijoje, ir kiek - Rytų Europoje. Iš 150 azijinių televizorių garantinio remonto
+   prireikė 4, iš 100 europinių - 2. Ar galima teigti, kad europinams televizoriams
+   garantinio remonto reikia rečiau?
+
+
+
+
+
+
+
+
+
+
+
+
+
 ***
   Padaryta su `r R.Version()$version.string`, `r R.Version()$platform`.
